@@ -18,24 +18,8 @@ static void		globals_init(t_global *g)
 	g->win_high = 1000;
 	g->img_width = 1600;
 	g->img_high = 1000;
-
-	// ft_fit_wire(f, &g->w_orig);
-	// ft_get_z_range(&g->w_orig);
-	// g->w_orig.x_bias = g->win_width / 2;
-	// g->w_orig.y_bias = g->win_high / 2;
-	// g->w_orig.angle.x = M_PI_2 * 0.0;
-	// g->w_orig.angle.y = M_PI_2 * 0.0;
-	// g->w_orig.angle.z = M_PI_2 * 0.0;
-	// g->w_orig.zoom = 1.0;
-	// g->w_orig.color_mod = 0;
-	// if (!(ft_wires_malloc(f)))
-	// 	ft_error("malloc error in wires\n");
-	// ft_copy_params(&f->w_orig, &f->w_up);
-	// ft_copy_params(&f->w_orig, &f->w_iso);
-	// ft_copy_params(&f->w_orig, &f->w_parral);
-	// ft_copy_wire(&f->w_orig, &f->w_up);
-	// ft_copy_wire(&f->w_orig, &f->w_iso);
-	// ft_copy_wire(&f->w_orig, &f->w_parral);
+	g->fr.zoom = 1;
+	g->fr.max_iterations = 10;
 }
 
 static void		ft_input_select(int argc, char **argv, t_global *g)

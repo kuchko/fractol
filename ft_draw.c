@@ -15,7 +15,7 @@
 static int	ft_x(void *p)
 {
 	(void)p;
-	system("leaks fdf > leaks");
+	system("leaks fractol > leaks");
 	exit(0);
 	return (0);
 }
@@ -74,8 +74,8 @@ int			ft_draw(t_global *g)
 	g->win_ptr = mlx_new_window(g->mlx_ptr, g->win_width, g->win_high, "Fractol");
 	g->img_ptr = mlx_new_image(g->mlx_ptr, g->win_width, g->win_high);
 	g->adr = mlx_get_data_addr(g->img_ptr, &g->bpp, &g->size_line, &g->endian);
-	mlx_put_image_to_window(g->mlx_ptr, g->win_ptr, g->img_ptr, 0, 0);
-	mlx_destroy_image(g->mlx_ptr, g->img_ptr);
+	// mlx_put_image_to_window(g->mlx_ptr, g->win_ptr, g->img_ptr, 0, 0);
+	// mlx_destroy_image(g->mlx_ptr, g->img_ptr);
 	// ft_draw_menu_start(f);
 	// ft_draw_menu_end(f);
 
@@ -84,11 +84,13 @@ int			ft_draw(t_global *g)
 */
 	draw_julia(g);
 	mlx_put_image_to_window(g->mlx_ptr, g->win_ptr, g->img_ptr, 0, 0);
+	ft_bzero(g->adr, sizeof(g->adr));
 	// mlx_destroy_image(g->mlx_ptr, g->img_ptr);
 
 
 	mlx_hook(g->win_ptr, 17, 0, ft_x, g);
-	// mlx_hook(f->win_ptr, 2, 0, ft_keys, g);
+	mlx_hook(g->win_ptr, 2, 0, ft_keys, g);
+	mlx_hook(g->win_ptr, 4, 0, ft_mouse, g);
 	mlx_loop(g->mlx_ptr);
 	return (0);
 }

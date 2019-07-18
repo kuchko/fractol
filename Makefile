@@ -17,7 +17,7 @@ OBJ_DIR = ./obj/
 CC = gcc
 CC_FLAGS = -Wall -Wextra -Werror
 
-SOURCES = main.c ft_draw.c draw_julia.c ft_puts.c
+SOURCES = main.c ft_draw.c draw_julia.c ft_puts.c ft_keys.c
 # ft_valid.c ft_fdf_addons.c ft_draw.c ft_fdf_init.c \
 #		ft_modify_view.c ft_modify_wire.c ft_puts.c ft_keys.c
 

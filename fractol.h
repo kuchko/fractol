@@ -38,11 +38,11 @@ typedef struct	s_fractol
 	double	new_im;
 	double	old_re;
 	double	old_im;
-	double	zoom = 1;
-	double	move_x = 0;
-	double	move_y = 0;
+	double	zoom;
+	double	move_x;
+	double	move_y;
 	int		color;
-	int 	max_iterations = 300;
+	int 	max_iterations;
 }				t_fractol;
 
 typedef struct	s_global
@@ -69,6 +69,8 @@ void			draw_julia(t_global *g);
 void			ft_putpixel(t_global *f, int x, int y, int color);
 int				rgb_to_int(int r, int g, int b, int alfa);
 
+int				ft_keys(int key, t_global *g);
 
+int		ft_mouse(int key, int x, int y, t_global *g);
 
 #endif
