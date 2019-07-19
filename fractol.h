@@ -21,8 +21,12 @@
 # include <math.h>
 
 # define ESC 53
+# define MOUSE_LEFT 1
+# define MOUSE_RIGHT 2
 # define ZOOM_IN 4
 # define ZOOM_OUT 5
+# define CENTER_ZOOM_IN 24
+# define CENTER_ZOOM_OUT 27
 # define ITER_PLUS 69
 # define ITER_MINUS 78
 # define MOVE_UP 126
@@ -39,10 +43,14 @@ typedef struct	s_fractol
 	double	old_re;
 	double	old_im;
 	double	zoom;
+	double	zoom_step;
 	double	move_x;
 	double	move_y;
 	int		color;
 	int 	max_iterations;
+	int		flag_move;
+	int		x_pre;
+	int		y_pre;
 }				t_fractol;
 
 typedef struct	s_global
@@ -71,6 +79,7 @@ int				rgb_to_int(int r, int g, int b, int alfa);
 
 int				ft_keys(int key, t_global *g);
 
-int		ft_mouse(int key, int x, int y, t_global *g);
-
+int				ft_mouse_press(int key, int x, int y, t_global *g);
+int				ft_mouse_release(int key, int x, int y, t_global *g);
+int				ft_mouse_move(int x, int y,  t_global *g);
 #endif

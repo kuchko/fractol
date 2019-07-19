@@ -90,7 +90,14 @@ int			ft_draw(t_global *g)
 
 	mlx_hook(g->win_ptr, 17, 0, ft_x, g);
 	mlx_hook(g->win_ptr, 2, 0, ft_keys, g);
-	mlx_hook(g->win_ptr, 4, 0, ft_mouse, g);
+	mlx_hook(g->win_ptr, 4, 0, ft_mouse_press, g);
+	mlx_hook(g->win_ptr, 5, 0, ft_mouse_release, g);
+	mlx_hook(g->win_ptr, 6, 0, ft_mouse_move, g);
+
+	// draw_julia(g);
+	// mlx_put_image_to_window(g->mlx_ptr, g->win_ptr, g->img_ptr, 0, 0);
+	// ft_bzero(g->adr, sizeof(g->adr));
+
 	mlx_loop(g->mlx_ptr);
 	return (0);
 }

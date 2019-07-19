@@ -42,8 +42,8 @@ void	pixel_calculate_and_print(t_global *g, int x, int y)
 
 void	draw_julia(t_global *g)
 {
-	g->fr.c_re = -0.7;
-	g->fr.c_im = 0.27015;
+	// g->fr.c_re = -0.7;
+	// g->fr.c_im = 0.27015;
 	int	y;
 	int	x;
 

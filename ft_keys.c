@@ -12,41 +12,6 @@
 
 #include "fractol.h"
 
-// static void	ft_iso_change(int key, t_wire *w)
-// {
-// 	if (key == 87)
-// 		w->angle.x -= M_PI_2 * 0.02;
-// 	else if (key == 84)
-// 		w->angle.x += M_PI_2 * 0.02;
-// 	else if (key == 88)
-// 		w->angle.y += M_PI_2 * 0.02;
-// 	else if (key == 86)
-// 		w->angle.y -= M_PI_2 * 0.02;
-// 	else if (key == 85)
-// 		w->angle.z += M_PI_2 * 0.02;
-// 	else if (key == 83)
-// 		w->angle.z -= M_PI_2 * 0.02;
-// }
-
-// static void	ft_zoom_change(int key, t_wire *w)
-// {
-// 	if (key == 78 && w->zoom >= 0.1)
-// 		w->zoom -= 0.1;
-// 	else if (key == 69 && w->zoom < 10.0)
-// 		w->zoom += 0.1;
-// }
-
-// static void	ft_bias_change(int key, t_wire *w)
-// {
-// 	if (key == 123)
-// 		w->x_bias -= 10;
-// 	else if (key == 124)
-// 		w->x_bias += 10;
-// 	else if (key == 125)
-// 		w->y_bias += 10;
-// 	else if (key == 126)
-// 		w->y_bias -= 10;
-// }
 
 // static int	ft_keys_continue(int key, t_global *g)
 // {
@@ -82,6 +47,10 @@ int			ft_keys(int key, t_global *g)
 		g->fr.max_iterations += 2;
 	else if (key == ITER_MINUS)
 		g->fr.max_iterations -= 2;
+	else if (key == CENTER_ZOOM_IN)
+		g->fr.zoom += 0.2 * g->fr.zoom;
+	else if (key == CENTER_ZOOM_OUT)
+		g->fr.zoom -= 0.2 * g->fr.zoom;
 
 	draw_julia(g);
 	mlx_put_image_to_window(g->mlx_ptr, g->win_ptr, g->img_ptr, 0, 0);
@@ -92,27 +61,83 @@ int			ft_keys(int key, t_global *g)
 	return (0);
 }
 
-int		ft_mouse(int key, int x, int y, t_global *g)
+int		ft_mouse_press(int key, int x, int y, t_global *g)
 {
-	int k;
+	// int k;
 
-	k = x + y;
+	// k = x + y;
 
 	if (key == ZOOM_IN)
 	{
-		g->fr.move_y += (y - 0.5 * g->img_high) / g->img_high / g->fr.zoom / 2 ;
-		g->fr.move_x += (x - 0.5 * g->img_width) / g->img_width / g->fr.zoom / 2;
-		g->fr.zoom += 0.2 * g->fr.zoom;
+		//g->fr.zoom *= 1.1;
+
+		/// this is [-1; 1]  :  2 * (y - g->img_high / 2) / (double) g->img_high;
+		// g->fr.move_y += (2.0 * (y - g->img_high / 2) / (double) g->img_high - 2.0 * (y - g->img_high / 2) / (double) g->img_high / g->fr.zoom_step) / g->fr.zoom;
+
+		g->fr.move_y += ((2 * y - g->img_high) / (double) g->img_high - (2 * y - g->img_high) / (double) g->img_high / g->fr.zoom_step) / g->fr.zoom;
+		g->fr.move_x += 1.5 * ((2 * x - g->img_width) / (double) g->img_width - (2 * x - g->img_width) / (double) g->img_width / g->fr.zoom_step) / g->fr.zoom;
+		g->fr.zoom *= g->fr.zoom_step;
+		g->fr.max_iterations++;
+
 	}
 	else if (key == ZOOM_OUT)
 	{
-		g->fr.move_y -= (y - 0.5 * g->img_high) / g->img_high / g->fr.zoom /2;
-		g->fr.move_x -= (x - 0.5 * g->img_width) / g->img_width / g->fr.zoom /2;
-		g->fr.zoom -= 0.2 * g->fr.zoom;
+
+		g->fr.move_y -= (2.0 * (y - g->img_high / 2) / (double) g->img_high - 2.0 * (y - g->img_high / 2) / (double) g->img_high / g->fr.zoom_step) / g->fr.zoom;// / g->fr.zoom_step;
+		g->fr.move_x -= 1.5 * ((2 * x - g->img_width) / (double) g->img_width - (2 * x - g->img_width) / (double) g->img_width / g->fr.zoom_step) / g->fr.zoom;
+		// g->fr.move_x -= (x - 0.5 * g->img_width) / g->img_width / g->fr.zoom;
+		g->fr.zoom /= g->fr.zoom_step ;
+		g->fr.max_iterations--;
 	}
+	else if (key == MOUSE_LEFT)
+	{
+		g->fr.flag_move = 1;
+		g->fr.x_pre = x;
+		g->fr.y_pre = y;
+		// ft_printf("(%d, %d)-", x, y);
+	}
+
 	ft_printf("%f\t", g->fr.zoom);
 	draw_julia(g);
 	mlx_put_image_to_window(g->mlx_ptr, g->win_ptr, g->img_ptr, 0, 0);
 	ft_bzero(g->adr, sizeof(g->adr));
+	return(0);
+}
+
+int		ft_mouse_release(int key, int x, int y, t_global *g)
+{
+		int k;
+
+	k = x + y;
+	if (key == MOUSE_LEFT)
+	{
+		ft_printf("\n OUT MOUSE UNPRESS\n");
+		g->fr.flag_move = 0;
+
+		// draw_julia(g);
+		// mlx_put_image_to_window(g->mlx_ptr, g->win_ptr, g->img_ptr, 0, 0);
+		// ft_bzero(g->adr, sizeof(g->adr));
+	}
+	return (0);
+}
+
+int		ft_mouse_move(int x, int y,  t_global *g)
+{
+	if (g->fr.flag_move == 1 && x > -1 && x < g->img_width && y > -1 && y < g->img_high)
+	{
+		// g->fr.c_re = 2.0 * (double) x / (double) g->img_width - (2.0);
+		// g->fr.c_im = (2.0) * (double) y / (double) g->img_high;
+		g->fr.c_re += (double) (x - g->fr.x_pre) / (double) g->img_width / g->fr.zoom / 0.5;
+		g->fr.c_im += (double) (y - g->fr.y_pre) / (double) g->img_high / g->fr.zoom / 0.5;
+		g->fr.x_pre = x;
+		g->fr.y_pre = y;
+		ft_printf("(%d, %d)-", x, y);
+		ft_printf("[%f, %f] ", g->fr.c_re, g->fr.c_im);
+
+		draw_julia(g);
+		mlx_put_image_to_window(g->mlx_ptr, g->win_ptr, g->img_ptr, 0, 0);
+		ft_bzero(g->adr, sizeof(g->adr));
+	}
+
 	return(0);
 }

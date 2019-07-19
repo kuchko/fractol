@@ -19,7 +19,13 @@ static void		globals_init(t_global *g)
 	g->img_width = 1600;
 	g->img_high = 1000;
 	g->fr.zoom = 1;
+	g->fr.zoom_step = 1.2;
 	g->fr.max_iterations = 10;
+	// Julia init
+	g->fr.c_re = -M_PI_2;//-0.7;
+	g->fr.c_im = 0;//0.27015;
+	// g->fr.c_re = -0.7;
+	// g->fr.c_im = 0.27015;
 }
 
 static void		ft_input_select(int argc, char **argv, t_global *g)
