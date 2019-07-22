@@ -22,10 +22,10 @@ static void		globals_init(t_global *g)
 	g->fr.zoom_step = 1.2;
 	g->fr.max_iterations = 10;
 	// Julia init
-	g->fr.c_re = -M_PI_2;//-0.7;
-	g->fr.c_im = 0;//0.27015;
-	// g->fr.c_re = -0.7;
-	// g->fr.c_im = 0.27015;
+	// g->fr.c_re = -M_PI_2;//-0.7;
+	// g->fr.c_im = 0;//0.27015;
+	g->fr.c_re = -0.7;
+	g->fr.c_im = 0.27015;
 }
 
 static void		ft_input_select(int argc, char **argv, t_global *g)
@@ -58,7 +58,12 @@ int		main(int argc, char **argv)
 	ft_input_select(argc, argv, &g);
 	globals_init(&g);
 
+	// int color  = 0x0;
+	// ft_printf("%x\n", color);
+	// color = change_color_rgb(color, -1, 0);
+	// ft_print_color(color);
+	// ft_printf("%x\n%d\n", color, color);
 	ft_draw(&g);
-	system("leaks fdf > leaks");
+	system("leaks fractol > leaks");
 	return (0);
 }

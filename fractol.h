@@ -17,7 +17,8 @@
 # include "ft_printf.h"
 # include "libft.h"
 # include <mlx.h>
-# include <fcntl.h>
+// # include <fcntl.h>
+# include <pthread.h>
 # include <math.h>
 
 # define ESC 53
@@ -33,6 +34,12 @@
 # define MOVE_DOWN 125
 # define MOVE_LEFT 123
 # define MOVE_RIGHT 124
+# define COLOR_PLUS 30
+# define COLOR_MINUS 33
+# define ALPHA_PLUS 47
+# define ALPHA_MINUS 43
+# define RELOAD 36
+# define STREAMS 8
 
 typedef struct	s_fractol
 {
@@ -47,10 +54,18 @@ typedef struct	s_fractol
 	double	move_x;
 	double	move_y;
 	int		color;
+	// int		c_s;
+	int		c_step_x;
+	int		c_step_y;
+	int		a_s;
+	double	t;
+
 	int 	max_iterations;
 	int		flag_move;
+	int		flag_color_move;
 	int		x_pre;
 	int		y_pre;
+
 }				t_fractol;
 
 typedef struct	s_global
@@ -76,6 +91,8 @@ int				ft_draw(t_global *g);
 void			draw_julia(t_global *g);
 void			ft_putpixel(t_global *f, int x, int y, int color);
 int				rgb_to_int(int r, int g, int b, int alfa);
+int				change_color_rgb(int color, int step_x, int step_y, int alfa_step);
+void			ft_print_color(int color);
 
 int				ft_keys(int key, t_global *g);
 

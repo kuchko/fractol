@@ -12,15 +12,23 @@
 
 #include "fractol.h"
 
+//Mandelbrot
 
 void	pixel_calculate_and_print(t_global *g, int x, int y)
 {
 	int		i;
 	double	t;
 
-	g->fr.new_re = 1.5 * (x - g->img_width / 2) / (0.5 * g->fr.zoom * g->img_width) + g->fr.move_x;
-	g->fr.new_im = (y - g->img_high / 2) / (0.5 * g->fr.zoom * g->img_high) + g->fr.move_y;
+	g->fr.c_re = 1.5 * (x - g->img_width / 2) / (0.5 * g->fr.zoom * g->img_width) + g->fr.move_x;
+	g->fr.c_im = (y - g->img_high / 2) / (0.5 * g->fr.zoom * g->img_high) + g->fr.move_y;
 
+// pr = 1.5 * (x - w / 2) / (0.5 * zoom * w) + moveX;
+// pi = (y - h / 2) / (0.5 * zoom * h) + moveY;
+// newRe = newIm = oldRe = oldIm = 0;
+	g->fr.new_re = 0;
+	g->fr.new_im = 0;
+	g->fr.old_re = 0;
+	g->fr.old_im = 0;
 	i = 0;
 	while (i < g->fr.max_iterations)
 	{
@@ -36,8 +44,40 @@ void	pixel_calculate_and_print(t_global *g, int x, int y)
 	g->fr.color = (((int)((9 * (1 - t) * t * t * t * 255)) << 16) |
 		(((int)(15 * (1 - t) * (1 - t) * t * t * 255)) << 8)) |
 					(int)(8.5 * (1 - t) * (1 - t) * (1 - t) * t * 255);
+	g->fr.color = change_color_rgb(g->fr.color, g->fr.c_step_x, g->fr.c_step_y, g->fr.a_s);
+	// ft_printf("COL %x ", g->fr.color );
 	ft_putpixel(g, x, y, g->fr.color);
 }
+
+
+// JULIA
+// void	pixel_calculate_and_print(t_global *g, int x, int y)
+// {
+// 	int		i;
+// 	double	t;
+
+// 	g->fr.new_re = 1.5 * (x - g->img_width / 2) / (0.5 * g->fr.zoom * g->img_width) + g->fr.move_x;
+// 	g->fr.new_im = (y - g->img_high / 2) / (0.5 * g->fr.zoom * g->img_high) + g->fr.move_y;
+
+// 	i = 0;
+// 	while (i < g->fr.max_iterations)
+// 	{
+// 		g->fr.old_re = g->fr.new_re;
+// 		g->fr.old_im = g->fr.new_im;
+// 		g->fr.new_re = g->fr.old_re * g->fr.old_re - g->fr.old_im * g->fr.old_im + g->fr.c_re;
+// 		g->fr.new_im = 2 * g->fr.old_re * g->fr.old_im + g->fr.c_im;
+// 		if((g->fr.new_re * g->fr.new_re + g->fr.new_im * g->fr.new_im) > 4)
+// 			break;
+// 		i++;
+// 	}
+// 	t = (double)(i) / (double)(g->fr.max_iterations);
+// 	g->fr.color = (((int)((9 * (1 - t) * t * t * t * 255)) << 16) |
+// 		(((int)(15 * (1 - t) * (1 - t) * t * t * 255)) << 8)) |
+// 					(int)(8.5 * (1 - t) * (1 - t) * (1 - t) * t * 255);
+// 	g->fr.color = change_color_rgb(g->fr.color, g->fr.c_s, g->fr.a_s);
+// 	// ft_printf("COL %x ", g->fr.color );
+// 	ft_putpixel(g, x, y, g->fr.color);
+// }
 
 
 void	draw_julia(t_global *g)
