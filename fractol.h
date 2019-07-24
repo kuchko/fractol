@@ -21,6 +21,12 @@
 # include <pthread.h>
 # include <math.h>
 
+# define WIDTH 1600
+# define HIGHT 1000
+
+# define IMG_WIDTH 1600
+# define IMG_HIGHT 1000
+
 # define ESC 53
 # define MOUSE_LEFT 1
 # define MOUSE_RIGHT 2
@@ -39,12 +45,14 @@
 # define ALPHA_PLUS 47
 # define ALPHA_MINUS 43
 # define RELOAD 36
-# define STREAMS 8
+# define THREADS 8
 
 typedef struct	s_fractol
 {
 	double	c_re;
 	double	c_im;
+	double	stp_re;
+	double	stp_im;
 	double	new_re;
 	double	new_im;
 	double	old_re;
@@ -58,7 +66,7 @@ typedef struct	s_fractol
 	int		c_step_x;
 	int		c_step_y;
 	int		a_s;
-	double	t;
+	// double	t;
 
 	int 	max_iterations;
 	int		flag_move;
@@ -77,18 +85,23 @@ typedef struct	s_global
 	int			bpp;
 	int			size_line;
 	int			endian;
-	int			win_width;
-	int			win_high;
-	int			img_width;
-	int			img_high;
-
+	// int			win_width;
+	// int			win_high;
+	// int			img_width;
+	// int			img_high;
 	int			fractol_select;
 	t_fractol	fr;
 
+	pthread_t	threads[THREADS];
+	int			xstart;
+	int			xend;
+	int			ystart;
+	int			yend;
+	int			i_tester;
 }				t_global;
 
 int				ft_draw(t_global *g);
-void			draw_julia(t_global *g);
+void			draw_fractol(t_global *g);
 void			ft_putpixel(t_global *f, int x, int y, int color);
 int				rgb_to_int(int r, int g, int b, int alfa);
 int				change_color_rgb(int color, int step_x, int step_y, int alfa_step);
@@ -99,4 +112,7 @@ int				ft_keys(int key, t_global *g);
 int				ft_mouse_press(int key, int x, int y, t_global *g);
 int				ft_mouse_release(int key, int x, int y, t_global *g);
 int				ft_mouse_move(int x, int y,  t_global *g);
+
+void			ft_threads(t_global *g);
+int				ft_re_draw(t_global *g);
 #endif

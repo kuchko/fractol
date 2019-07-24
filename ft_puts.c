@@ -52,9 +52,9 @@ void	ft_putpixel(t_global *f, int x, int y, int color)
 {
 	int	*i;
 
-	if (x > -1 && x < f->win_width && y > -1 && y < f->win_high)
+	if (x > -1 && x < WIDTH && y > -1 && y < HIGHT)
 	{
 		i = (int*)f->adr;
-		i[y * f->img_width + x] = color;
+		i[y * WIDTH + x] = color;
 	}
 }

@@ -14,10 +14,9 @@
 
 static void		globals_init(t_global *g)
 {
-	g->win_width = 1600;
-	g->win_high = 1000;
-	g->img_width = 1600;
-	g->img_high = 1000;
+	g->i_tester = 0;
+
+	ft_bzero(&g->fr, sizeof(g->fr));
 	g->fr.zoom = 1;
 	g->fr.zoom_step = 1.2;
 	g->fr.max_iterations = 10;
@@ -58,11 +57,6 @@ int		main(int argc, char **argv)
 	ft_input_select(argc, argv, &g);
 	globals_init(&g);
 
-	// int color  = 0x0;
-	// ft_printf("%x\n", color);
-	// color = change_color_rgb(color, -1, 0);
-	// ft_print_color(color);
-	// ft_printf("%x\n%d\n", color, color);
 	ft_draw(&g);
 	system("leaks fractol > leaks");
 	return (0);
