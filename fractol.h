@@ -1,23 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fdf.h                                              :+:      :+:    :+:   */
+/*   fractol.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: okuchko <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/30 11:58:08 by okuchko           #+#    #+#             */
-/*   Updated: 2019/03/30 12:00:37 by okuchko          ###   ########.fr       */
+/*   Created: 2019/07/25 17:18:56 by okuchko           #+#    #+#             */
+/*   Updated: 2019/07/25 17:19:05 by okuchko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FRACTOL_H
 # define FRACTOL_H
 
-# include "get_next_line.h"
 # include "ft_printf.h"
 # include "libft.h"
 # include <mlx.h>
-// # include <fcntl.h>
 # include <pthread.h>
 # include <math.h>
 
@@ -26,6 +24,8 @@
 
 # define IMG_WIDTH 1600
 # define IMG_HIGHT 1000
+
+# define TEXT_OFFSET 550
 
 # define ESC 53
 # define MOUSE_LEFT 1
@@ -62,18 +62,14 @@ typedef struct	s_fractol
 	double	move_x;
 	double	move_y;
 	int		color;
-	// int		c_s;
 	int		c_step_x;
 	int		c_step_y;
 	int		a_s;
-	// double	t;
-
-	int 	max_iterations;
+	int		max_iterations;
 	int		flag_move;
 	int		flag_color_move;
 	int		x_pre;
 	int		y_pre;
-
 }				t_fractol;
 
 typedef struct	s_global
@@ -85,10 +81,6 @@ typedef struct	s_global
 	int			bpp;
 	int			size_line;
 	int			endian;
-	// int			win_width;
-	// int			win_high;
-	// int			img_width;
-	// int			img_high;
 	int			fractol_select;
 	t_fractol	fr;
 
@@ -97,22 +89,33 @@ typedef struct	s_global
 	int			xend;
 	int			ystart;
 	int			yend;
-	int			i_tester;
 }				t_global;
+
+void			globals_init(t_global *g);
+
+void			ft_draw_menu_start(t_global *g);
+void			ft_draw_menu_end(t_global *g);
 
 int				ft_draw(t_global *g);
 void			draw_fractol(t_global *g);
+
+int				burningship_iter(t_global *g);
+int				burningstar_iter(t_global *g);
+int				buffalo_iter(t_global *g);
+int				mandelbrot_iter(t_global *g);
+int				julia_iter(t_global *g);
+
 void			ft_putpixel(t_global *f, int x, int y, int color);
-int				rgb_to_int(int r, int g, int b, int alfa);
-int				change_color_rgb(int color, int step_x, int step_y, int alfa_step);
+int				change_color_rgb(int color, int s_x, int s_y, int alfa_step);
 void			ft_print_color(int color);
 
 int				ft_keys(int key, t_global *g);
 
 int				ft_mouse_press(int key, int x, int y, t_global *g);
 int				ft_mouse_release(int key, int x, int y, t_global *g);
-int				ft_mouse_move(int x, int y,  t_global *g);
+int				ft_mouse_move(int x, int y, t_global *g);
 
 void			ft_threads(t_global *g);
 int				ft_re_draw(t_global *g);
+
 #endif

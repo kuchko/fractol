@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: okuchko <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/30 13:49:09 by okuchko           #+#    #+#             */
-/*   Updated: 2019/03/30 13:49:14 by okuchko          ###   ########.fr       */
+/*   Created: 2019/07/25 17:20:00 by okuchko           #+#    #+#             */
+/*   Updated: 2019/07/25 17:20:03 by okuchko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,52 +20,62 @@ static int	ft_x(void *p)
 	return (0);
 }
 
-static void	ft_draw_menu_start(t_global *f)
+static void	iteration_init(t_global *g, int x, int y)
 {
-	mlx_string_put(f->mlx_ptr, f->win_ptr, 740, 100, 0xff0000,
-		"WELCOME to Fracol project by okuchko");
-	mlx_string_put(f->mlx_ptr, f->win_ptr, 750, 250, 0x00ffff,
-		"please, press any key to start:");
-	mlx_string_put(f->mlx_ptr, f->win_ptr, 700, 300, 0xffd700,
-		"1                         parallel up view");
-	mlx_string_put(f->mlx_ptr, f->win_ptr, 700, 325, 0xffd700,
-		"2                           isometric view");
-	mlx_string_put(f->mlx_ptr, f->win_ptr, 700, 350, 0xffd700,
-		"3                         perspective view");
-	mlx_string_put(f->mlx_ptr, f->win_ptr, 700, 400, 0xffd700,
-		"q                          original colors");
-	mlx_string_put(f->mlx_ptr, f->win_ptr, 700, 425, 0xffd700,
-		"w                          gradient colors");
-	mlx_string_put(f->mlx_ptr, f->win_ptr, 700, 450, 0xffd700,
-		"e                    fill with green color");
-	mlx_string_put(f->mlx_ptr, f->win_ptr, 700, 500, 0xffd700,
-		"left arrow                       move left");
-	mlx_string_put(f->mlx_ptr, f->win_ptr, 700, 525, 0xffd700,
-		"right arrow                     move right");
-	mlx_string_put(f->mlx_ptr, f->win_ptr, 700, 550, 0xffd700,
-		"up arrow                           move up");
-	mlx_string_put(f->mlx_ptr, f->win_ptr, 700, 575, 0xffd700,
-		"down arrow                       move down");
+	if (g->fractol_select == 1)
+	{
+		g->fr.new_re = 1.5 * (x - IMG_WIDTH / 2) /
+					(0.5 * g->fr.zoom * IMG_WIDTH) + g->fr.move_x;
+		g->fr.new_im = (y - IMG_HIGHT / 2) /
+					(0.5 * g->fr.zoom * IMG_HIGHT) + g->fr.move_y;
+	}
+	else
+	{
+		g->fr.c_re = 1.5 * (x - IMG_WIDTH / 2) /
+						(0.5 * g->fr.zoom * IMG_WIDTH) + g->fr.move_x;
+		g->fr.c_im = (y - IMG_HIGHT / 2) /
+						(0.5 * g->fr.zoom * IMG_HIGHT) + g->fr.move_y;
+		g->fr.new_re = 0;
+		g->fr.new_im = 0;
+	}
 }
 
-static void	ft_draw_menu_end(t_global *f)
+static void	pixel_calc_color(t_global *g, int i)
 {
-	mlx_string_put(f->mlx_ptr, f->win_ptr, 700, 625, 0xffd700,
-		"+                                zoom plus");
-	mlx_string_put(f->mlx_ptr, f->win_ptr, 700, 650, 0xffd700,
-		"-                               zoom minus");
-	mlx_string_put(f->mlx_ptr, f->win_ptr, 700, 700, 0xffd700,
-		"num 1                      turn by oZ left");
-	mlx_string_put(f->mlx_ptr, f->win_ptr, 700, 725, 0xffd700,
-		"num 3                     turn by oZ right");
-	mlx_string_put(f->mlx_ptr, f->win_ptr, 700, 750, 0xffd700,
-		"num 2                        turn by oX up");
-	mlx_string_put(f->mlx_ptr, f->win_ptr, 700, 775, 0xffd700,
-		"num 5                      turn by oX down");
-	mlx_string_put(f->mlx_ptr, f->win_ptr, 700, 800, 0xffd700,
-		"num 4                      turn by oY left");
-	mlx_string_put(f->mlx_ptr, f->win_ptr, 700, 825, 0xffd700,
-		"num 6                     turn by oY right");
+	double	t;
+
+	t = (double)(i) / (double)(g->fr.max_iterations);
+	g->fr.color = (((int)((9 * (1 - t) * t * t * t * 255)) << 16) |
+		(((int)(15 * (1 - t) * (1 - t) * t * t * 255)) << 8)) |
+					(int)(8.5 * (1 - t) * (1 - t) * (1 - t) * t * 255);
+	g->fr.color = change_color_rgb(g->fr.color, g->fr.c_step_x,
+											g->fr.c_step_y, g->fr.a_s);
+}
+
+void		draw_fractol(t_global *g)
+{
+	int	y;
+	int	x;
+	int	(*iterate[5])(t_global*);
+
+	iterate[0] = &julia_iter;
+	iterate[1] = &mandelbrot_iter;
+	iterate[2] = &buffalo_iter;
+	iterate[3] = &burningship_iter;
+	iterate[4] = &burningstar_iter;
+	y = g->ystart;
+	while (y < g->yend)
+	{
+		x = g->xstart;
+		while (x < g->xend)
+		{
+			iteration_init(g, x, y);
+			pixel_calc_color(g, iterate[g->fractol_select - 1](g));
+			ft_putpixel(g, x, y, g->fr.color);
+			x++;
+		}
+		y++;
+	}
 }
 
 int			ft_draw(t_global *g)
@@ -76,8 +86,6 @@ int			ft_draw(t_global *g)
 	g->adr = mlx_get_data_addr(g->img_ptr, &g->bpp, &g->size_line, &g->endian);
 	ft_draw_menu_start(g);
 	ft_draw_menu_end(g);
-
-	// mlx_expose_hook(g->win_ptr, ft_re_draw, g);
 	mlx_hook(g->win_ptr, 17, 0, ft_x, g);
 	mlx_hook(g->win_ptr, 2, 0, ft_keys, g);
 	mlx_hook(g->win_ptr, 4, 0, ft_mouse_press, g);
