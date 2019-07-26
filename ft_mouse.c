@@ -23,8 +23,10 @@ int		ft_mouse_press(int key, int x, int y, t_global *g)
 			y - IMG_HIGHT) / (double)IMG_HIGHT / g->fr.zoom_step) / g->fr.zoom;
 		g->fr.move_x += 1.5 * sign * ((2 * x - IMG_WIDTH) / (double)IMG_WIDTH -
 		(2 * x - IMG_WIDTH) / (double)IMG_WIDTH / g->fr.zoom_step) / g->fr.zoom;
-		g->fr.zoom = key == ZOOM_IN ?
-			g->fr.zoom * g->fr.zoom_step : g->fr.zoom / g->fr.zoom_step;
+		if (key == ZOOM_IN)
+			g->fr.zoom *= g->fr.zoom_step;
+		else if (g->fr.zoom > 0.01)
+			g->fr.zoom /= g->fr.zoom_step;
 	}
 	else if (key == MOUSE_LEFT || key == MOUSE_RIGHT)
 	{

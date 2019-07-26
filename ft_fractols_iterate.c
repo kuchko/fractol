@@ -69,7 +69,7 @@ int	buffalo_iter(t_global *g)
 		g->fr.old_im = g->fr.new_im;
 		g->fr.new_re = fabs(g->fr.old_re * g->fr.old_re -
 			g->fr.old_im * g->fr.old_im) + g->fr.c_re - 1.5 * g->fr.stp_re;
-		g->fr.new_im = fabs(g->fr.old_re * g->fr.old_im) * (-2) +
+		g->fr.new_im = fabs(g->fr.old_re * g->fr.old_im) * (2) +
 												g->fr.c_im - g->fr.stp_im;
 		if ((g->fr.new_re * g->fr.new_re + g->fr.new_im * g->fr.new_im) > 4)
 			break ;

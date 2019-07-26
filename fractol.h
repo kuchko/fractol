@@ -93,12 +93,14 @@ typedef struct	s_global
 
 void			globals_init(t_global *g);
 
-void			ft_draw_menu_start(t_global *g);
-void			ft_draw_menu_end(t_global *g);
+void			ft_draw_menu(t_global *g);
 
 int				ft_draw(t_global *g);
 void			draw_fractol(t_global *g);
 
+int				mandelbrot_4th_iter(t_global *g);
+int				mandelbrot_tricorn_iter(t_global *g);
+int				burning5th_iter(t_global *g);
 int				burningship_iter(t_global *g);
 int				burningstar_iter(t_global *g);
 int				buffalo_iter(t_global *g);

@@ -56,13 +56,16 @@ void		draw_fractol(t_global *g)
 {
 	int	y;
 	int	x;
-	int	(*iterate[5])(t_global*);
+	int	(*iterate[8])(t_global*);
 
 	iterate[0] = &julia_iter;
 	iterate[1] = &mandelbrot_iter;
 	iterate[2] = &buffalo_iter;
 	iterate[3] = &burningship_iter;
 	iterate[4] = &burningstar_iter;
+	iterate[5] = &burning5th_iter;
+	iterate[6] = &mandelbrot_tricorn_iter;
+	iterate[7] = &mandelbrot_4th_iter;
 	y = g->ystart;
 	while (y < g->yend)
 	{
@@ -84,8 +87,7 @@ int			ft_draw(t_global *g)
 	g->win_ptr = mlx_new_window(g->mlx_ptr, WIDTH, HIGHT, "Fractol");
 	g->img_ptr = mlx_new_image(g->mlx_ptr, IMG_WIDTH, IMG_HIGHT);
 	g->adr = mlx_get_data_addr(g->img_ptr, &g->bpp, &g->size_line, &g->endian);
-	ft_draw_menu_start(g);
-	ft_draw_menu_end(g);
+	ft_draw_menu(g);
 	mlx_hook(g->win_ptr, 17, 0, ft_x, g);
 	mlx_hook(g->win_ptr, 2, 0, ft_keys, g);
 	mlx_hook(g->win_ptr, 4, 0, ft_mouse_press, g);

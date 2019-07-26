@@ -32,12 +32,15 @@ static void	ft_input_select(int argc, char **argv, t_global *g)
 		ft_printf("2 - Mandelbrot\n");
 		ft_printf("3 - Buffalo\n");
 		ft_printf("4 - Burning Ship\n");
-		ft_error("5 - Burning Star\n");
+		ft_printf("5 - Burning Star\n");
+		ft_printf("6 - Burning Ship 5th order\n");
+		ft_printf("7 - Mandelbrot Tricorn\n");
+		ft_error("8 - Mandelbrot 4th order\n");
 	}
 	else if (argc == 2 && ft_strlen(argv[1]) == 1)
 	{
 		g->fractol_select = ft_atoi(argv[1]);
-		if (g->fractol_select < 1 || g->fractol_select > 5)
+		if (g->fractol_select < 1 || g->fractol_select > 8)
 			ft_error("No such fractol number\n");
 	}
 	else

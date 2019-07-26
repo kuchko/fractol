@@ -12,9 +12,43 @@
 
 #include "fractol.h"
 
-void	ft_draw_menu_start(t_global *g)
+static void	ft_draw_menu_1(t_global *g, int o)
 {
-	int o;
+	mlx_string_put(g->mlx_ptr, g->win_ptr, o, 500, 0xffd700,
+		"<>                            change alpha channel");
+	mlx_string_put(g->mlx_ptr, g->win_ptr, o, 525, 0xffd700,
+		"[]                                    change color");
+	mlx_string_put(g->mlx_ptr, g->win_ptr, o, 550, 0xffd700,
+		"+                                          zoom in");
+	mlx_string_put(g->mlx_ptr, g->win_ptr, o, 575, 0xffd700,
+		"-                                         zoom out");
+	mlx_string_put(g->mlx_ptr, g->win_ptr, o, 600, 0xffd700,
+		"num +                          increase iterations");
+	mlx_string_put(g->mlx_ptr, g->win_ptr, o, 625, 0xffd700,
+		"num -                          decrease iterations");
+}
+
+static void	ft_draw_menu_2(t_global *g, int o)
+{
+	mlx_string_put(g->mlx_ptr, g->win_ptr, o, 650, 0xffd700,
+		"left arrow                               move left");
+	mlx_string_put(g->mlx_ptr, g->win_ptr, o, 675, 0xffd700,
+		"right arrow                             move right");
+	mlx_string_put(g->mlx_ptr, g->win_ptr, o, 700, 0xffd700,
+		"up arrow                                   move up");
+	mlx_string_put(g->mlx_ptr, g->win_ptr, o, 725, 0xffd700,
+		"down arrow                               move down");
+	mlx_string_put(g->mlx_ptr, g->win_ptr, o, 775, 0xffd700,
+		"MOUSE left                                     pan");
+	mlx_string_put(g->mlx_ptr, g->win_ptr, o, 800, 0xffd700,
+		"MOUSE middle                                  zoom");
+	mlx_string_put(g->mlx_ptr, g->win_ptr, o, 825, 0xffd700,
+		"MOUSE right                                  color");
+}
+
+void		ft_draw_menu(t_global *g)
+{
+	int	o;
 
 	o = TEXT_OFFSET;
 	mlx_string_put(g->mlx_ptr, g->win_ptr, 620, 100, 0xff0000,
@@ -31,37 +65,12 @@ void	ft_draw_menu_start(t_global *g)
 		"4                                     Burning Ship");
 	mlx_string_put(g->mlx_ptr, g->win_ptr, o, 400, 0xffd700,
 		"5                                     Burning Star");
+	mlx_string_put(g->mlx_ptr, g->win_ptr, o, 425, 0xffd700,
+		"6                           Burning Ship 5th order");
 	mlx_string_put(g->mlx_ptr, g->win_ptr, o, 450, 0xffd700,
-		"<>                            change alpha channel");
+		"7                               Mandelbrot Tricorn");
 	mlx_string_put(g->mlx_ptr, g->win_ptr, o, 475, 0xffd700,
-		"[]                                    change color");
-	mlx_string_put(g->mlx_ptr, g->win_ptr, o, 500, 0xffd700,
-		"+                                          zoom in");
-	mlx_string_put(g->mlx_ptr, g->win_ptr, o, 525, 0xffd700,
-		"-                                         zoom out");
-}
-
-void	ft_draw_menu_end(t_global *g)
-{
-	int o;
-
-	o = TEXT_OFFSET;
-	mlx_string_put(g->mlx_ptr, g->win_ptr, o, 575, 0xffd700,
-		"num +                          increase iterations");
-	mlx_string_put(g->mlx_ptr, g->win_ptr, o, 600, 0xffd700,
-		"num -                          decrease iterations");
-	mlx_string_put(g->mlx_ptr, g->win_ptr, o, 650, 0xffd700,
-		"left arrow                               move left");
-	mlx_string_put(g->mlx_ptr, g->win_ptr, o, 675, 0xffd700,
-		"right arrow                             move right");
-	mlx_string_put(g->mlx_ptr, g->win_ptr, o, 700, 0xffd700,
-		"up arrow                                   move up");
-	mlx_string_put(g->mlx_ptr, g->win_ptr, o, 725, 0xffd700,
-		"down arrow                               move down");
-	mlx_string_put(g->mlx_ptr, g->win_ptr, o, 775, 0xffd700,
-		"MOUSE left                                     pan");
-	mlx_string_put(g->mlx_ptr, g->win_ptr, o, 800, 0xffd700,
-		"MOUSE middle                                  zoom");
-	mlx_string_put(g->mlx_ptr, g->win_ptr, o, 825, 0xffd700,
-		"MOUSE right                                  color");
+		"8                             Mandelbrot 4th order");
+	ft_draw_menu_1(g, o);
+	ft_draw_menu_2(g, o);
 }

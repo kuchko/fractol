@@ -18,7 +18,13 @@ static int	ft_keys_select(int key, t_global *g)
 		g->fractol_select = key - 17;
 	else if (key == 23)
 		g->fractol_select = 5;
-	if (key == RELOAD || (key > 17 && key < 22) || key == 23)
+	else if (key == 22)
+		g->fractol_select = 6;
+	else if (key == 26)
+		g->fractol_select = 7;
+	else if (key == 28)
+		g->fractol_select = 8;
+	if (key == RELOAD || (key > 17 && key < 23) || key == 26 || key == 28)
 		globals_init(g);
 	return (0);
 }
@@ -60,9 +66,9 @@ int			ft_keys(int key, t_global *g)
 	else if (key == MOVE_RIGHT)
 		g->fr.move_x += 0.2 / g->fr.zoom;
 	else if (key == ITER_PLUS)
-		g->fr.max_iterations += 2;
-	else if (key == ITER_MINUS)
-		g->fr.max_iterations -= 2;
+		g->fr.max_iterations += 1;
+	else if (key == ITER_MINUS && g->fr.max_iterations > 1)
+		g->fr.max_iterations -= 1;
 	else if (key == CENTER_ZOOM_IN)
 		g->fr.zoom += 0.2 * g->fr.zoom;
 	else if (key == CENTER_ZOOM_OUT)
